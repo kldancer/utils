@@ -1,0 +1,142 @@
+[root@server4 ~]# nslookup
+# 设置查询类型为NS（域名服务器）
+> set type=ns
+# 使用.查询根域名服务器的NS记录
+> .
+;; communications error to 127.0.0.53#53: timed out
+Server:         127.0.0.53
+Address:        127.0.0.53#53
+
+Non-authoritative answer:
+.       nameserver = g.root-servers.net.
+.       nameserver = f.root-servers.net.
+.       nameserver = d.root-servers.net.
+.       nameserver = e.root-servers.net.
+.       nameserver = c.root-servers.net.
+.       nameserver = i.root-servers.net.
+.       nameserver = m.root-servers.net.
+.       nameserver = k.root-servers.net.
+.       nameserver = b.root-servers.net.
+.       nameserver = l.root-servers.net.
+.       nameserver = h.root-servers.net.
+.       nameserver = a.root-servers.net.
+.       nameserver = j.root-servers.net.
+
+Authoritative answers can be found from:
+>
+>
+# 将查询类型切换回A（Address），然后查询根域名服务器之一b.root-servers.net的A记录
+> set type=a
+> b.root-servers.net.
+;; communications error to 127.0.0.53#53: timed out
+Server:         127.0.0.53
+Address:        127.0.0.53#53
+
+Non-authoritative answer:
+Name:   b.root-servers.net
+Address: 170.247.170.2
+>
+
+# 更改默认DNS服务器并重新查询根域名的NS记录，然后再次查询.com顶级域名的NS记录
+> server 170.247.170.2
+Default server: 170.247.170.2
+Address: 170.247.170.2#53
+> set type=ns
+> com.
+;; communications error to 170.247.170.2#53: timed out
+Server:         170.247.170.2
+Address:        170.247.170.2#53
+
+Non-authoritative answer:
+*** Can't find com.: No answer
+
+Authoritative answers can be found from:
+com     nameserver = h.gtld-servers.net.
+com     nameserver = a.gtld-servers.net.
+com     nameserver = l.gtld-servers.net.
+com     nameserver = f.gtld-servers.net.
+com     nameserver = k.gtld-servers.net.
+com     nameserver = c.gtld-servers.net.
+com     nameserver = d.gtld-servers.net.
+com     nameserver = b.gtld-servers.net.
+com     nameserver = e.gtld-servers.net.
+com     nameserver = g.gtld-servers.net.
+com     nameserver = i.gtld-servers.net.
+com     nameserver = j.gtld-servers.net.
+com     nameserver = m.gtld-servers.net.
+# 权威名称服务器
+m.gtld-servers.net      internet address = 192.55.83.30
+l.gtld-servers.net      internet address = 192.41.162.30
+k.gtld-servers.net      internet address = 192.52.178.30
+j.gtld-servers.net      internet address = 192.48.79.30
+i.gtld-servers.net      internet address = 192.43.172.30
+h.gtld-servers.net      internet address = 192.54.112.30
+g.gtld-servers.net      internet address = 192.42.93.30
+f.gtld-servers.net      internet address = 192.35.51.30
+e.gtld-servers.net      internet address = 192.12.94.30
+d.gtld-servers.net      internet address = 192.31.80.30
+c.gtld-servers.net      internet address = 192.26.92.30
+b.gtld-servers.net      internet address = 192.33.14.30
+a.gtld-servers.net      internet address = 192.5.6.30
+m.gtld-servers.net      has AAAA address 2001:501:b1f9::30
+l.gtld-servers.net      has AAAA address 2001:500:d937::30
+>
+>
+# 更改DNS服务器为.com顶级域的一个权威服务器（192.33.14.30），并查询billbill.com的NS记录。
+> server 192.33.14.30
+Default server: 192.33.14.30
+Address: 192.33.14.30#53
+> set type=ns
+> billbill.com
+;; communications error to 192.33.14.30#53: timed out
+Server:         192.33.14.30
+Address:        192.33.14.30#53
+
+Non-authoritative answer:
+*** Can't find billbill.com: No answer
+
+Authoritative answers can be found from:
+# 得到了billbill.com的两个权威名称服务器
+billbill.com    nameserver = ns1.mytrafficmanagement.com.
+billbill.com    nameserver = ns2.mytrafficmanagement.com.
+ns1.mytrafficmanagement.com     internet address = 52.223.41.32
+ns2.mytrafficmanagement.com     internet address = 35.71.129.26
+>
+>
+
+
+# 更改DNS服务器为billbill.com的权威名称服务器之一（52.223.41.32），并将查询类型设回A。查询www.bilibili.com的A记录
+> server 52.223.41.32
+Default server: 52.223.41.32
+Address: 52.223.41.32#53
+> set type=a
+> www.bilibili.com.
+;; communications error to 52.223.41.32#53: timed out
+Server:         52.223.41.32
+Address:        52.223.41.32#53
+
+Name:   www.bilibili.com
+Address: 45.33.2.79
+Name:   www.bilibili.com
+Address: 45.79.19.196
+Name:   www.bilibili.com
+Address: 45.56.79.23
+Name:   www.bilibili.com
+Address: 45.33.20.235
+Name:   www.bilibili.com
+Address: 198.58.118.167
+Name:   www.bilibili.com
+Address: 45.33.23.183
+Name:   www.bilibili.com
+Address: 96.126.123.244
+Name:   www.bilibili.com
+Address: 173.255.194.134
+Name:   www.bilibili.com
+Address: 72.14.185.43
+Name:   www.bilibili.com
+Address: 72.14.178.174
+Name:   www.bilibili.com
+Address: 45.33.30.197
+Name:   www.bilibili.com
+Address: 45.33.18.44
+>

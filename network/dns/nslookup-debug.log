@@ -1,0 +1,98 @@
+# 这段代码是通过nslookup命令查询hubble-ui.kube-system.svc.cluster.local的IP地址的详细过程。
+# 首先，查询hubble-ui.kube-system.svc.cluster.local.default.svc.cluster.local的A记录，未找到，
+# 然后查询hubble-ui.kube-system.svc.cluster.local.svc.cluster.local的A记录，未找到，
+# 再查询hubble-ui.kube-system.svc.cluster.local.cluster.local的A记录，仍未找到。
+# 最后，查询hubble-ui.kube-system.svc.cluster.local的A记录和AAAA记录，找到了A记录，对应的IP地址为10.99.53.195。
+
+[root@x-tools-deployment-6997c5b9fc-g8tnt /]# nslookup -debug  hubble-ui.kube-system.svc.cluster.local
+Server:         10.96.0.10
+Address:        10.96.0.10#53
+
+------------
+    QUESTIONS:
+        hubble-ui.kube-system.svc.cluster.local.default.svc.cluster.local, type = A, class = IN
+    ANSWERS:
+    AUTHORITY RECORDS:
+    ->  cluster.local
+        origin = ns.dns.cluster.local
+        mail addr = hostmaster.cluster.local
+        serial = 1714204409
+        refresh = 7200
+        retry = 1800
+        expire = 86400
+        minimum = 30
+        ttl = 30
+    ADDITIONAL RECORDS:
+------------
+** server can't find hubble-ui.kube-system.svc.cluster.local.default.svc.cluster.local: NXDOMAIN
+Server:         10.96.0.10
+Address:        10.96.0.10#53
+
+------------
+    QUESTIONS:
+        hubble-ui.kube-system.svc.cluster.local.svc.cluster.local, type = A, class = IN
+    ANSWERS:
+    AUTHORITY RECORDS:
+    ->  cluster.local
+        origin = ns.dns.cluster.local
+        mail addr = hostmaster.cluster.local
+        serial = 1714204409
+        refresh = 7200
+        retry = 1800
+        expire = 86400
+        minimum = 30
+        ttl = 10
+    ADDITIONAL RECORDS:
+------------
+** server can't find hubble-ui.kube-system.svc.cluster.local.svc.cluster.local: NXDOMAIN
+Server:         10.96.0.10
+Address:        10.96.0.10#53
+
+------------
+    QUESTIONS:
+        hubble-ui.kube-system.svc.cluster.local.cluster.local, type = A, class = IN
+    ANSWERS:
+    AUTHORITY RECORDS:
+    ->  cluster.local
+        origin = ns.dns.cluster.local
+        mail addr = hostmaster.cluster.local
+        serial = 1714204409
+        refresh = 7200
+        retry = 1800
+        expire = 86400
+        minimum = 30
+        ttl = 30
+    ADDITIONAL RECORDS:
+------------
+** server can't find hubble-ui.kube-system.svc.cluster.local.cluster.local: NXDOMAIN
+Server:         10.96.0.10
+Address:        10.96.0.10#53
+
+------------
+    QUESTIONS:
+        hubble-ui.kube-system.svc.cluster.local, type = A, class = IN
+    ANSWERS:
+    ->  hubble-ui.kube-system.svc.cluster.local
+        internet address = 10.99.53.195
+        ttl = 10
+    AUTHORITY RECORDS:
+    ADDITIONAL RECORDS:
+------------
+Name:   hubble-ui.kube-system.svc.cluster.local
+Address: 10.99.53.195
+------------
+    QUESTIONS:
+        hubble-ui.kube-system.svc.cluster.local, type = AAAA, class = IN
+    ANSWERS:
+    AUTHORITY RECORDS:
+    ->  cluster.local
+        origin = ns.dns.cluster.local
+        mail addr = hostmaster.cluster.local
+        serial = 1714204409
+        refresh = 7200
+        retry = 1800
+        expire = 86400
+        minimum = 30
+        ttl = 10
+    ADDITIONAL RECORDS:
+------------

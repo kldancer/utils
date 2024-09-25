@@ -1,0 +1,7 @@
+-N FAB-SVC-2-TCP9090
+-N FAB-SEP-2-0-TCP9090
+
+-A FAB-NODEPORTS -p tcp -m tcp --dport 31908 -j FAB-SVC-2-TCP9090
+-A FAB-SVC-2-TCP9090 -j FAB-SEP-2-0-TCP9090
+-A FAB-SEP-2-0-TCP9090 -m comment --comment "fabric masq endpoint 10.250.2.85:9090" -j FAB-MARK-MASQ
+-A FAB-SEP-2-0-TCP9090 -p tcp -m comment --comment "fabric dnat endpoint 10.250.2.85:9090" -j DNAT --to-destination 10.250.2.85:9090

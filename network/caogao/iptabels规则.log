@@ -1,0 +1,7 @@
+# 某节点突然无法访问其他节点上的容器网络，结果发现该节点filter表有问题
+-A INPUT -p tcp -m mark ! --mark 0x4000/0x4000 -m set --match-set ovn40services dst -m conntrack --ctstate NEW -j REJECT --reject-with icmp-port-unreachable
+-A INPUT -j REJECT --reject-with icmp-host-prohibited
+-A FORWARD -j REJECT --reject-with icmp-host-prohibited
+-A OUTPUT -p tcp -m mark ! --mark 0x4000/0x4000 -m set --match-set ovn40services dst -m conntrack --ctstate NEW -j REJECT --reject-with icmp-port-unreachable
+
+

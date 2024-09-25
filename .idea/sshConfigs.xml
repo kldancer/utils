@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig authType="PASSWORD" host="10.50.100.70" id="9b8fdf85-0259-442f-bb9e-95280332ef62" port="22" customName="dl" nameFormat="CUSTOM" username="root" useOpenSSHConfig="true">
+        <option name="customName" value="dl" />
+      </sshConfig>
+    </configs>
+  </component>
+</project>

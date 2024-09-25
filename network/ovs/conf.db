@@ -1,0 +1,1 @@
+ovsdb-client dump -f json  > openvswitch.json

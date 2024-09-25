@@ -1,0 +1,45 @@
+vpc-nat-gw-eip-szby9dyo-0:/kube-ovn# tcpdump -i any   icmp and   host 192.165.100.2
+tcpdump: data link type LINUX_SLL2
+tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
+listening on any, link-type LINUX_SLL2 (Linux cooked v2), snapshot length 262144 bytes
+09:55:24.403654 eth0  In  IP 151.0.0.5 > 192.165.100.2: ICMP echo request, id 3439, seq 108, length 64
+09:55:24.403670 net1  Out IP 192.169.100.8 > 192.165.100.2: ICMP echo request, id 3439, seq 108, length 64
+09:55:24.403998 net1  In  IP 192.165.100.2 > 192.169.100.8: ICMP echo reply, id 3439, seq 108, length 64
+09:55:24.404022 eth0  Out IP 192.165.100.2 > 151.0.0.5: ICMP echo reply, id 3439, seq 108, length 64
+
+
+
+
+vpc-nat-gw-eip-szby9dyo-0:/kube-ovn# tcpdump -i any   icmp and   host 192.165.100.2
+tcpdump: data link type LINUX_SLL2
+tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
+listening on any, link-type LINUX_SLL2 (Linux cooked v2), snapshot length 262144 bytes
+09:59:58.706235 eth0  In  IP 151.0.0.5 > 192.165.100.2: ICMP echo request, id 3460, seq 3, length 64
+09:59:58.706250 net1  Out IP 151.0.0.5 > 192.165.100.2: ICMP echo request, id 3460, seq 3, length 64
+09:59:59.730194 eth0  In  IP 151.0.0.5 > 192.165.100.2: ICMP echo request, id 3460, seq 4, length 64
+09:59:59.730208 net1  Out IP 151.0.0.5 > 192.165.100.2: ICMP echo request, id 3460, seq 4, length 64
+
+
+
+# iptables-legacy -S -t nat
+-A EXCLUSIVE_DNAT -d 192.169.100.8/32 -j DNAT --to-destination 151.0.0.5
+-A EXCLUSIVE_SNAT -s 151.0.0.5/32 -j SNAT --to-source 192.169.100.8
+
+
+# kubectl get iptables-fip-rules.kubeovn.io -A ｜ grep eip-lvr1hmd3                                                                                                                               cd54: Tue Sep 24 18:06:21 2024
+NAME           EIP            V4IP            INTERNALIP   V6IP   READY   NATGWDP
+eip-lvr1hmd3   eip-lvr1hmd3   192.169.100.8   151.0.0.5           true    eip-szby9dyo
+
+
+# vpc-nat-gw-eip-szby9dyo-0:/kube-ovn# conntrack -L 好
+icmp     1 29 src=151.0.0.5 dst=192.165.100.2 type=8 code=0 id=3515 src=192.165.100.2 dst=192.169.100.8 type=0 code=0 id=3515 mark=0 secctx=system_u:object_r:unlabeled_t:s0 use=1
+
+
+# vpc-nat-gw-eip-szby9dyo-0:/kube-ovn# conntrack -L 坏
+icmp     1 29 src=151.0.0.5 dst=192.165.100.2 type=8 code=0 id=3460 [UNREPLIED] src=192.165.100.2 dst=151.0.0.5 type=0 code=0 id=3460 mark=0 secctx=system_u:object_r:unlabeled_t:s0 use=1
+
+
+
+Every 1.0s: conntrack -L -p icmp --src 112.0.0.7                                                                                                                                                            node152: Wed Sep 25 10:11:54 2024
+conntrack v1.4.4 (conntrack-tools): 1 flow entries have been shown.
+icmp     1 29 src=112.0.0.7 dst=172.80.10.26 type=8 code=0 id=9615 src=172.80.10.26 dst=112.0.0.7 type=0 code=0 id=9615 mark=0 secctx=system_u:object_r:unlabeled_t:s0 zone=156 use=1

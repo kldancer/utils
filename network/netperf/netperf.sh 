@@ -1,0 +1,220 @@
+#!/bin/bash
+
+#  sudo bash netperf.sh\  --tcp_stream --dry-run 172.28.8.138
+
+METRICS="THROUGHPUT,THROUGHPUT_UNITS,THROUGHPUT_CONFID,LOCAL_SEND_SIZE,LOCAL_RECV_SIZE,REMOTE_SEND_SIZE,REMOTE_RECV_SIZE,PROTOCOL,LOCAL_SEND_CALLS,LOCAL_BYTES_PER_SEND,LOCAL_RECV_CALLS,LOCAL_BYTES_PER_RECV,REMOTE_SEND_CALLS,REMOTE_BYTES_PER_SEND,REMOTE_RECV_CALLS,REMOTE_BYTES_PER_RECV,LOCAL_SEND_THROUGHPUT,LOCAL_RECV_THROUGHPUT,REMOTE_SEND_THROUGHPUT,REMOTE_RECV_THROUGHPUT,LOCAL_SYSNAME,LOCAL_RELEASE,LOCAL_VERSION,LOCAL_MACHINE,REMOTEL_SYSNAME,REMOTEL_RELEASE,REMOTEL_VERSION,REMOTEL_MACHINE,LOCAL_TRANSPORT_RETRANS,REMOTE_TRANSPORT_RETRANS,LOCAL_CPU_UTIL,REMOTE_CPU_UTIL"
+
+RR_METRICS="TRANSACTION_RATE,P50_LATENCY,P90_LATENCY,RT_LATENCY,MEAN_LATENCY,STDEV_LATENCY,REQUEST_SIZE,RESPONSE_SIZE"
+
+set -e
+
+function run_duper_netperf() {
+    loops=$1
+    shift
+    for ((i=0; i<loops; i++)); do
+        prefix="$(printf "%02d" $i) "
+        cmd="(netperf -s 2 "$@" | sed -e 's/^/$prefix/') &"
+        echo $cmd
+        echo
+        if [ "$run_cmd" = true ]; then
+            eval "$cmd"
+        fi
+    done
+    wait
+}
+
+# $@ 将多个参数分别作为单独参数传递给目标函数
+function duper_netperf() {
+   if [ "$run_cmd" = true ]; then
+      run_duper_netperf "$@" | perl -ln -e 'BEGIN { $sum = 0; $count = 0 } END { print "NSTREAMS=$count\nAGGREGATE_THROUGHPUT=$sum"; } if (/ THROUGHPUT=(\S+)$/) { $sum += $1; $count += 1 } print;'
+   else
+      run_duper_netperf "$@"
+   fi
+}
+
+
+
+function dostream_duper() {
+    export LC_ALL=en_US.UTF-8
+    local ty=$1
+    for nstreams in 1 2; do
+        cmd="duper_netperf $nstreams  \
+            -H $rhost                 \
+            -D 10                     \
+            -l 10                     \
+            -t $ty                    \
+            -j                        \
+            --                        \
+            -P ,8000                  \
+            -k $METRICS"
+
+        echo "<=============dostream_duper $ty $nstreams===============>"
+        $cmd
+        echo "END"
+        echo
+    done
+}
+
+
+#-H $rhost: 指定远程主机地址，其中$rhost的值应为具体的主机名或IP地址。
+#-D 10: 设置数据包发送的间隔时间，也即数据包延迟时间，单位为秒，这里设置为10秒。
+#-l 300: 设置测试持续时间，单位为秒，这里设置为300秒。
+#-t $ty: 指定测试类型，$ty应为预先定义的测试类型，如tcp_stream。
+#-j: 启用JSON格式输出结果。
+#--: 分隔选项和位置参数。
+#-P ,8000: 指定目标服务端端口范围，这里限制为8000端口。
+#-k $METRICS: 指定要收集的指标列表，$METRICS包含了一系列性能指标，例如吞吐量、大小、协议等详细信息。
+function dostream() {
+    local ty=$1
+    cmd="netperf  \
+        -H $rhost             \
+        -D 5                  \
+        -l 10                 \
+        -t $ty                \
+        -j                    \
+        --                    \
+        -P ,8000              \
+        -k $METRICS"
+
+    echo "<=============dostream $ty===============>"
+    echo $cmd
+    if [ "$run_cmd" = true ]; then
+        $cmd
+    fi
+    echo "END"
+    echo
+}
+
+
+#-r 1,1:  设置请求和响应数据包大小分别为 1 字节。
+#-b: 设置批量传输模式下的数据块大小。在批量传输模式中netperf 将数据分成多个块进行传输，
+# 在实际应用中，-r 参数通常用于TCP_RR（Request/Reply）测试模式，
+# 而-b 参数用于TCP_STREAM或UDP_STREAM等批量传输模式。它们帮助你评估网络在不同数据包大小下的性能表现，这对于理解网络带宽、延迟和吞吐量特性非常重要。
+# 例如，-r 1,1 表示所有的请求数据包大小都是1字节，而-b 512 表示在批量传输模式下，每次传输的数据块大小为512字节。
+function dorr() {
+    local proto=$1
+
+    for b in 0 1 2 4 8 16 32 64 128 256 512; do
+        cmd="netperf    \
+            -t ${proto}_rr          \
+            -l 10                   \
+            -D 5                    \
+            -H $rhost               \
+            -j                      \
+            --                      \
+            -P  ,8000               \
+            -r 1,1                  \
+            -b $b                   \
+            -k $METRICS,$RR_METRICS"
+
+        echo "<=============dorr ${proto}_rr $b===============>"
+        echo $cmd
+        if [ "$run_cmd" = true ]; then
+            $cmd
+        fi
+        echo "END"
+        echo
+    done
+}
+
+
+
+nloops=1
+run_cmd=true
+
+while true; do
+    case $1 in
+        --tcp_stream)
+            run_tcp_stream=1
+            ;;
+
+        --tcp_maerts)
+            run_tcp_maerts=1
+            ;;
+
+        --tcp_rr)
+            run_tcp_rr=1
+            ;;
+
+        #--tcp_crr)
+        #    run_tcp_crr=1
+        #    ;;
+
+        --udp_stream)
+            run_udp_stream=1
+            ;;
+
+        --udp_rr)
+            run_udp_rr=1
+            ;;
+
+        --all)
+            run_tcp_stream=1
+            run_tcp_maerts=1
+            run_udp_stream=1
+            run_tcp_rr=1
+            run_udp_rr=1
+            run_tcp_crr=1
+            ;;
+
+        # 表示在执行命令前加上"echo"，用于模拟运行而不实际执行。
+        --dry-run)
+            run_cmd=false
+            ;;
+
+        --nloops)
+            if [ "$2" ]; then
+                nloops=$2
+                shift
+            else
+                echo >2 "--nloops requires argument"
+                exit 1
+            fi
+            ;;
+
+        -?*)
+              echo 'WARN: Unknown option (ignored): %s' "$1" >&2
+              ;;
+
+        --)
+            shift
+            break
+            ;;
+
+        *)
+            break
+    esac
+    shift
+done
+
+if [ -z "$1" ]; then
+    echo "Usage: $0 [--{tcp,udp}_stream] [--tcp_maerts] [--{tcp,udp}_rr] [--all] [--nloops n] <rhost>"
+    exit 1
+fi
+
+rhost=$1
+
+for _ in $(seq $nloops) ; do
+
+    # Stream
+    if [ "$run_tcp_stream" == "1" ]; then
+        dostream "tcp_stream"
+        dostream_duper "tcp_stream"
+    fi
+    if [ "$run_tcp_maerts" == "1" ]; then
+        dostream "tcp_maerts"
+        dostream_duper "tcp_maerts"
+    fi
+    if [ "$run_udp_stream" == "1" ]; then
+        dostream "udp_stream"
+    fi
+
+    # RR
+    if [ "$run_tcp_rr" == "1" ]; then
+        dorr "tcp"
+    fi
+
+    if [ "$run_udp_rr" == "1" ]; then
+        dorr "udp"
+    fi
+done

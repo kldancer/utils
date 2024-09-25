@@ -1,0 +1,25 @@
+# --- Build the backend ---
+FROM golang:1.22 AS go-build
+
+ARG TARGETARCH
+
+WORKDIR /go/src/aios/aios-automl
+
+# Download packages.
+COPY go.mod .
+COPY go.sum .
+RUN go mod download
+
+# Copy sources.
+COPY cmd/ cmd/
+COPY pkg/ pkg/
+
+# Build the binary.
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=${TARGETARCH} go build -a -o aios-automl   ./cmd/main.go
+
+FROM alpine:3.16.0
+
+WORKDIR /app
+
+COPY --from=go-build /go/src/aios/aios-automl/aios-automl .
+ENTRYPOINT ["./aios-automl"]

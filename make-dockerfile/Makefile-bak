@@ -1,0 +1,24 @@
+VERSION ?= v1.0
+CPU_ARCH:=$(shell go env GOARCH)
+IMAGE ?= abcsys.cn:40443/aios/automl:${VERSION}-${CPU_ARCH}
+
+
+.PHONY: image
+image:  bin
+	docker build -t ${IMAGE} .
+
+
+.PHONY: image-amd64
+image-amd64:
+	$(eval CPU_ARCH = amd64)
+	docker buildx build --build-arg TARGETARCH=${CPU_ARCH} --platform linux/${CPU_ARCH} -t ${IMAGE} .
+
+
+.PHONY: image-arm64
+image-arm64:
+	$(eval CPU_ARCH = arm64)
+	docker buildx build --build-arg TARGETARCH=${CPU_ARCH} --platform linux/${CPU_ARCH} -t ${IMAGE} .
+
+
+
+

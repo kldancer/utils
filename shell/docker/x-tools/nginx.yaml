@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deploy-overlay
+  labels:
+    app: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-overlay
+  template:
+    metadata:
+      annotations:
+        kubernetes.customized/fabric-networks: "network-overlay"
+      labels:
+        app: nginx-overlay
+    spec:
+      containers:
+      - name: nginx-overlay
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-svc-overlay
+spec:
+  selector:
+    app: nginx-overlay
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 30080
+  type: NodePort
+
+
