@@ -2,31 +2,16 @@
 <project version="4">
   <component name="RemoteTargetsManager">
     <targets>
-      <target name="f1" type="ssh/sftp" uuid="9af25e41-0771-4bda-b210-efd241a6a96a">
+      <target name="root@192.168.31.50:22" type="ssh/sftp" uuid="b279b0bb-0417-4965-b669-d1a88eb63836">
         <config>
           <option name="projectRootOnTarget" value="/root/utils" />
-          <option name="serverName" value="f1" />
-          <option name="useRsync" value="true" />
+          <option name="serverName" value="root@192.168.31.50:22 password" />
         </config>
         <ContributedStateBase type="GoLanguageRuntime">
           <config>
-            <option name="goPath" value="/root/go" />
+            <option name="goPath" value="/home/ykl/go" />
             <option name="goRoot" value="/usr/local/go/bin/go" />
-            <option name="goVersion" value="go1.20.4 linux/amd64" />
-          </config>
-        </ContributedStateBase>
-      </target>
-      <target name="pc1" type="ssh/sftp" uuid="ad86f8d7-7147-429e-822d-ee16cd8d53b1">
-        <config>
-          <option name="projectRootOnTarget" value="/root/utils" />
-          <option name="serverName" value="pc1" />
-          <option name="useRsync" value="true" />
-        </config>
-        <ContributedStateBase type="GoLanguageRuntime">
-          <config>
-            <option name="goPath" value="/root/runtime/go/path" />
-            <option name="goRoot" value="/root/runtime/go/root/bin/go" />
-            <option name="goVersion" value="go1.19.9 linux/amd64" />
+            <option name="goVersion" value="go1.22.1 linux/amd64" />
           </config>
         </ContributedStateBase>
       </target>

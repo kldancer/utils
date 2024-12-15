@@ -154,3 +154,19 @@ func TestConstructVNPUyTpe(t *testing.T) {
 		fmt.Println(result)
 	}
 }
+
+func TestIntersection(t *testing.T) {
+	tests := [][]string{
+		[]string{
+			"eno1", "ens4f0", "ens4f1", "ens5f1",
+		},
+		[]string{
+			"eno1", "ens4f0", "ens5f1",
+		},
+		[]string{
+			"eno1", "ens4f0", "ens5f1",
+		},
+	}
+	res := Intersection(tests...)
+	fmt.Println(res)
+}

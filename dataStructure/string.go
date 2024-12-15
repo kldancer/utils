@@ -333,3 +333,19 @@ func ConstructVNPUyTpe(templateName string) string {
 	}
 	return output
 }
+
+func Intersection(slices ...[]string) []string {
+	m := make(map[string]int)
+	for _, slice := range slices {
+		for _, str := range slice {
+			m[str]++
+		}
+	}
+	inter := make([]string, 0)
+	for str, count := range m {
+		if count == len(slices) {
+			inter = append(inter, str)
+		}
+	}
+	return inter
+}

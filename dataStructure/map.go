@@ -26,3 +26,19 @@ func Math() {
 	fmt.Printf("c: %v\n", c)
 	fmt.Printf("d: %v\n", d)
 }
+
+func mapWork() {
+	a := make(map[string]int)
+	a["a"] = 1
+	a["b"] = 1
+	a["c"] = 0
+
+	b := mapWorker(a)
+	fmt.Printf("b: %v\n", b)
+}
+
+func mapWorker(m map[string]int) map[string]int {
+	m["b"] += 1
+	m["c"] += 1
+	return m
+}

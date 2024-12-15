@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  namespace: ykl
+  labels:
+    app: nginx
+    qos-resource/qos-1r356oi4: qos-1r356oi4 # 表示该负载绑定有qos-1r356oi4
+    qos-resource/qos-eowb7du3: qos-eowb7du3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+        qos-resource/qos-1r356oi4: qos-1r356oi4
+        qos-resource/qos-eowb7du3: qos-eowb7du3
+        qos-resource/qos-bound: "true" # 表示该pod有绑定qos
+      annotations:
+        ovn.kubernetes.io/logical_switch: subnet-0lvr21o5
+        k8s.v1.cni.cncf.io/networks: kube-system/subnet-nxyq7lv9,kube-system/subnet-r6b2ic74
+        subnet-0lvr21o5.qos-resource/qos-id: qos-1r356oi4 # 表示使用子网 subnet-0lvr21o5的网卡绑定的qos-id 为 qos-1r356oi4
+        subnet-nxyq7lv9.qos-resource/qos-id: qos-1r356oi4
+        subnet-r6b2ic74.qos-resource/qos-id: qos-eowb7du3
+    spec:
+      containers:
+        - name: nginx
+          image: os-harbor-svc.default.svc.cloudos:443/helm/cloudos-cvs/nginx:1.14.2
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "200m"
+              memory: "256Mi"
+
+
