@@ -2,9 +2,7 @@
 <project version="4">
   <component name="SshConfigs">
     <configs>
-      <sshConfig authType="PASSWORD" host="10.50.100.70" id="9b8fdf85-0259-442f-bb9e-95280332ef62" port="22" customName="dl" nameFormat="CUSTOM" username="root" useOpenSSHConfig="true">
-        <option name="customName" value="dl" />
-      </sshConfig>
+      <sshConfig authType="PASSWORD" host="10.0.112.69" id="77b6f556-b314-48f5-8ad5-586cc9e5a325" port="22" nameFormat="DESCRIPTIVE" username="root" useOpenSSHConfig="true" />
     </configs>
   </component>
 </project>

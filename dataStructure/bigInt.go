@@ -32,15 +32,25 @@ type EndpointInfo struct {
 	Pad     [3]uint32 `align:"pad"`
 }
 
+// 结构体整体大小必须是其最大字段大小（8 字节）的倍数。
+
 type RemoteEndpointInfo struct {
 	SecurityIdentity  uint32 `align:"sec_identity"`
 	TunnelEndpoint    uint32 `align:"tunnel_endpoint"`
 	TunnelEndpointMac uint64 `align:"tunnel_endpoint_mac"`
+	_                 uint32
 	_                 uint16
-	_                 uint16
-	_                 uint16
-	Key               uint8 `align:"key"`
-	Flags             uint8 `align:"flag_skip_tunnel"`
+	//_                 uint16
+	Key   uint8 `align:"key"`
+	Flags uint8 `align:"flag_skip_tunnel"`
+}
+
+type EndpointKey struct {
+	// represents both IPv6 and IPv4 (in the lowest four bytes)
+	IP        [16]byte `align:"$union0"`
+	Family    uint8    `align:"family"`
+	Key       uint8    `align:"key"`
+	ClusterID uint16   `align:"cluster_id"`
 }
 
 func EndpointInfoData() {
@@ -50,4 +60,18 @@ func EndpointInfoData() {
 	_rs := uint32(g.Size())
 
 	fmt.Sprintf("size of EndpointInfo is %d, binary.Size is %d %d", rs, bs, _rs)
+}
+
+type AffixKey struct {
+	Family uint8    `align:"family"`
+	IP     [16]byte `align:"$union0"`
+}
+
+func AffixKeyData() {
+	g := reflect.TypeOf(AffixKey{})
+	bs := binary.Size(AffixKey{})
+	rs := int(g.Size())
+	_rs := uint32(g.Size())
+
+	fmt.Sprintf("size of AffixKey is %d, binary.Size is %d %d", rs, bs, _rs)
 }

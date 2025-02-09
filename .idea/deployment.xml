@@ -10,6 +10,13 @@
           </mappings>
         </serverdata>
       </paths>
+      <paths name="kf1">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/ykl/go/src/utils" local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
     </serverData>
   </component>
 </project>

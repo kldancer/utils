@@ -1,23 +1,27 @@
 module utils
 
-go 1.21
+go 1.22
+
+toolchain go1.22.10
 
 require (
 	github.com/aliyun/alibaba-cloud-sdk-go v1.62.564
 	github.com/cheggaaa/pb/v3 v3.1.4
+	github.com/cilium/ebpf v0.17.1
 	github.com/google/martian v2.1.0+incompatible
 	github.com/jaypipes/ghw v0.12.0
 	github.com/k8snetworkplumbingwg/sriovnet v1.2.0
 	github.com/mdlayher/arp v0.0.0-20220512170110-6706a2966875
-	github.com/mdlayher/ethernet v0.0.0-20220221185849-529eae5b6118
 	github.com/onsi/ginkgo v1.16.5
 	github.com/onsi/gomega v1.30.0
+	github.com/pojozhang/sugar v0.0.0-20210725073955-f3af0d9a167e
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/pflag v1.0.5
 	github.com/tidwall/gjson v1.17.1
 	github.com/valyala/bytebufferpool v1.0.0
 	github.com/vishvananda/netlink v1.2.1-beta.2
-	golang.org/x/crypto v0.16.0
+	golang.org/x/crypto v0.21.0
+	golang.org/x/sys v0.26.0
 	google.golang.org/grpc v1.58.3
 	google.golang.org/protobuf v1.31.0
 	gorm.io/driver/mysql v1.5.7
@@ -56,14 +60,15 @@ require (
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
-	github.com/josharian/native v1.0.0 // indirect
+	github.com/josharian/native v1.1.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect
 	github.com/mattn/go-runewidth v0.0.14 // indirect
+	github.com/mdlayher/ethernet v0.0.0-20220221185849-529eae5b6118 // indirect
 	github.com/mdlayher/packet v1.0.0 // indirect
-	github.com/mdlayher/socket v0.2.1 // indirect
+	github.com/mdlayher/socket v0.4.1 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
@@ -76,15 +81,15 @@ require (
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.0 // indirect
 	github.com/vishvananda/netns v0.0.4 // indirect
-	golang.org/x/net v0.19.0 // indirect
+	golang.org/x/net v0.23.0 // indirect
 	golang.org/x/oauth2 v0.12.0 // indirect
 	golang.org/x/sync v0.5.0 // indirect
-	golang.org/x/sys v0.16.0 // indirect
-	golang.org/x/term v0.15.0 // indirect
+	golang.org/x/term v0.18.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/time v0.3.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20230822172742-b8732ec3820d // indirect
+	gopkg.in/h2non/gock.v1 v1.1.2 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/tomb.v1 v1.0.0-20141024135613-dd632973f1e7 // indirect

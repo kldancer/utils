@@ -12,3 +12,7 @@ func TestEndpointInfoData(t *testing.T) {
 
 	EndpointInfoData()
 }
+
+func TestAffixKeyData(t *testing.T) {
+	AffixKeyData()
+}
