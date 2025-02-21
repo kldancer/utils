@@ -1,0 +1,23 @@
+kind: Vpc
+apiVersion: kubeovn.io/v1
+metadata:
+  name: test-vpc-1
+spec:
+  namespaces:
+  - ns1
+---
+kind: Vpc
+apiVersion: kubeovn.io/v1
+metadata:
+  name: test-vpc-2
+spec:
+  namespaces:
+  - ns2
+---
+kind: Vpc
+apiVersion: kubeovn.io/v1
+metadata:
+  name: test-vpc-3
+spec:
+  namespaces:
+    - ns3
