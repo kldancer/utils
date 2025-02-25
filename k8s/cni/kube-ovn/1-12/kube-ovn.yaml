@@ -130,7 +130,7 @@ spec:
                 fieldRef:
                   fieldPath: spec.nodeName
             - name: OVN_DB_IPS
-              value: 10.0.114.92
+              value: 10.0.112.55
             - name: POD_IP
               valueFrom:
                 fieldRef:
@@ -262,7 +262,7 @@ spec:
           - --dpdk-tunnel-iface=br-phy
           - --network-type=geneve
           - --default-interface-name=
-          - --cni-conf-name=01-kube-ovn.conflist
+          - --cni-conf-name=10-kube-ovn.conflist
           - --logtostderr=false
           - --alsologtostderr=true
           - --log_file=/var/log/kube-ovn/kube-ovn-cni.log
@@ -271,7 +271,8 @@ spec:
           - --enable-tproxy=false
           - --ovs-vsctl-concurrency=100
           - --secure-serving=false
-          - --v=3
+          - --enable-vpc-node-conn=true
+#          - --v=3
         securityContext:
           runAsUser: 0
           privileged: true

@@ -21,3 +21,11 @@ metadata:
 spec:
   namespaces:
     - ns3
+---
+kind: Vpc
+apiVersion: kubeovn.io/v1
+metadata:
+  name: test-vpc-4
+spec:
+  namespaces:
+    - ns4

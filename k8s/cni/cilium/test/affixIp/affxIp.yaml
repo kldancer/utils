@@ -13,3 +13,11 @@ metadata:
 spec:
   address: "2.2.2.2"
   ipType: 6
+---
+apiVersion: cilium.io/v2
+kind: CiliumAffixIp
+metadata:
+  name: 3.3.3.3
+spec:
+  address: "3.3.3.3"
+  ipType: 4

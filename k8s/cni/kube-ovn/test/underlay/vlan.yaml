@@ -1,0 +1,7 @@
+apiVersion: kubeovn.io/v1
+kind: Vlan
+metadata:
+  name: vlan10
+spec:
+  id: 10
+  provider: enp3s0
