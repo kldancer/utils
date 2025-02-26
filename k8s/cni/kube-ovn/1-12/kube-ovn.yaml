@@ -75,14 +75,14 @@ spec:
           imagePullPolicy: IfNotPresent
           args:
           - /kube-ovn/start-controller.sh
-          - --default-cidr=10.16.0.0/16
-          - --default-gateway=10.16.0.1
+          - --default-cidr=10.16.0.0/16,fd00:10:16::/64
+          - --default-gateway=10.16.0.1,fd00:10:16::0
           - --default-gateway-check=true
           - --default-logical-gateway=false
           - --default-u2o-interconnection=false
           - --default-exclude-ips=
-          - --node-switch-cidr=100.64.0.0/16
-          - --service-cluster-ip-range=10.96.0.0/12
+          - --node-switch-cidr=100.64.0.0/16,fd00:100:64::/112
+          - --service-cluster-ip-range=10.96.0.0/12,fd00:10:96::/112
           - --network-type=geneve
           - --default-interface-name=
           - --default-exchange-link-name=false
@@ -130,7 +130,7 @@ spec:
                 fieldRef:
                   fieldPath: spec.nodeName
             - name: OVN_DB_IPS
-              value: 10.0.114.92
+              value: 10.0.112.55
             - name: POD_IP
               valueFrom:
                 fieldRef:
@@ -257,12 +257,12 @@ spec:
           - --enable-mirror=false
           - --enable-arp-detect-ip-conflict=true
           - --encap-checksum=true
-          - --service-cluster-ip-range=10.96.0.0/12
+          - --service-cluster-ip-range=10.96.0.0/12,fd00:10:96::/112
           - --iface=
           - --dpdk-tunnel-iface=br-phy
           - --network-type=geneve
           - --default-interface-name=
-          - --cni-conf-name=01-kube-ovn.conflist
+          - --cni-conf-name=10-kube-ovn.conflist
           - --logtostderr=false
           - --alsologtostderr=true
           - --log_file=/var/log/kube-ovn/kube-ovn-cni.log
@@ -454,8 +454,8 @@ spec:
           command:
           - /kube-ovn/kube-ovn-pinger
           args:
-          - --external-address=114.114.114.114
-          - --external-dns=alauda.cn.
+          - --external-address=114.114.114.114,2400:3200::1
+          - --external-dns=google.com.
           - --logtostderr=false
           - --alsologtostderr=true
           - --log_file=/var/log/kube-ovn/kube-ovn-pinger.log
@@ -709,7 +709,7 @@ spec:
     - name: metrics
       port: 10661
   type: ClusterIP
-  
+  ipFamilyPolicy: PreferDualStack
   selector:
     app: kube-ovn-monitor
   sessionAffinity: None
@@ -723,7 +723,7 @@ metadata:
     app: kube-ovn-pinger
     service.edgemesh.kubeedge.io/service-proxy-name: ""
 spec:
-  
+  ipFamilyPolicy: PreferDualStack
   selector:
     app: kube-ovn-pinger
   ports:
@@ -739,7 +739,7 @@ metadata:
     app: kube-ovn-controller
     service.edgemesh.kubeedge.io/service-proxy-name: ""
 spec:
-  
+  ipFamilyPolicy: PreferDualStack
   selector:
     app: kube-ovn-controller
   ports:
@@ -755,7 +755,7 @@ metadata:
     app: kube-ovn-cni
     service.edgemesh.kubeedge.io/service-proxy-name: ""
 spec:
-  
+  ipFamilyPolicy: PreferDualStack
   selector:
     app: kube-ovn-cni
   ports:

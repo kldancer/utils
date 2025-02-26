@@ -13,7 +13,7 @@ spec:
       port: 6641
       targetPort: 6641
   type: ClusterIP
-  
+  ipFamilyPolicy: PreferDualStack
   selector:
     app: ovn-central
     ovn-nb-leader: "true"
@@ -34,7 +34,7 @@ spec:
       port: 6642
       targetPort: 6642
   type: ClusterIP
-  
+  ipFamilyPolicy: PreferDualStack
   selector:
     app: ovn-central
     ovn-sb-leader: "true"
@@ -55,7 +55,7 @@ spec:
       port: 6643
       targetPort: 6643
   type: ClusterIP
-  
+  ipFamilyPolicy: PreferDualStack
   selector:
     app: ovn-central
     ovn-northd-leader: "true"
@@ -120,7 +120,7 @@ spec:
             - name: ENABLE_SSL
               value: "false"
             - name: NODE_IPS
-              value: 10.0.114.92
+              value: 10.0.112.55
             - name: POD_IP
               valueFrom:
                 fieldRef:

@@ -33,3 +33,15 @@ spec:
   protocol: IPv4
   namespaces:
     - ns3
+---
+kind: Subnet
+apiVersion: kubeovn.io/v1
+metadata:
+  name: net4
+spec:
+  vpc: test-vpc-4
+  provider: net3.kube-system.ovn
+  cidrBlock: 11.0.4.0/24
+  protocol: IPv4
+  namespaces:
+    - ns4

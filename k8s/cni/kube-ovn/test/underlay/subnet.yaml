@@ -1,0 +1,9 @@
+apiVersion: kubeovn.io/v1
+kind: Subnet
+metadata:
+  name: u-subnet1
+spec:
+  protocol: IPv4
+  cidrBlock: 172.17.0.0/16
+  gateway: 172.17.0.1
+  vlan: vlan10

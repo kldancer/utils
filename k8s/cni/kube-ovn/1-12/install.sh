@@ -2,7 +2,7 @@
 set -euo pipefail
 
 IPV6=${IPV6:-false}
-DUAL_STACK=${DUAL_STACK:-false}
+DUAL_STACK=${DUAL_STACK:-true}
 ENABLE_SSL=${ENABLE_SSL:-false}
 ENABLE_VLAN=${ENABLE_VLAN:-false}
 CHECK_GATEWAY=${CHECK_GATEWAY:-true}
@@ -17,7 +17,7 @@ ENABLE_EIP_SNAT=${ENABLE_EIP_SNAT:-true}
 LS_DNAT_MOD_DL_DST=${LS_DNAT_MOD_DL_DST:-true}
 LS_CT_SKIP_DST_LPORT_IPS=${LS_CT_SKIP_DST_LPORT_IPS:-true}
 ENABLE_EXTERNAL_VPC=${ENABLE_EXTERNAL_VPC:-true}
-CNI_CONFIG_PRIORITY=${CNI_CONFIG_PRIORITY:-01}
+CNI_CONFIG_PRIORITY=${CNI_CONFIG_PRIORITY:-10}
 ENABLE_LB_SVC=${ENABLE_LB_SVC:-true}
 ENABLE_NAT_GW=${ENABLE_NAT_GW:-true}
 ENABLE_KEEP_VM_IP=${ENABLE_KEEP_VM_IP:-true}
@@ -54,7 +54,7 @@ VERSION="v1.12.22"
 IMAGE_PULL_POLICY="IfNotPresent"
 
 POD_CIDR_IPV4="10.16.0.0/16"
-POD_CIDR_IPV6="fd00:10:16::/112"
+POD_CIDR_IPV6="fd00:10:16::/64"
 POD_GATEWAY_IPV4=$(ipcalc $POD_CIDR_IPV4 | grep HostMin | awk '{print $NF}')
 # fd00:10:16::会在create Deployment时报错，使用fd00:10:16::0替换
 POD_GATEWAY_IPV6=$(ipcalc $POD_CIDR_IPV6 | grep HostMin | awk '{print $NF}')0
@@ -3156,6 +3156,13 @@ rules:
       - subjectaccessreviews
     verbs:
       - create
+  - apiGroups:
+      - cilium.io
+    resources:
+      - ciliumaffixips
+    verbs:
+      - list
+      - watch
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -4306,6 +4313,7 @@ spec:
           - --enable-tproxy=$ENABLE_TPROXY
           - --ovs-vsctl-concurrency=$OVS_VSCTL_CONCURRENCY
           - --secure-serving=${SECURE_SERVING}
+          - --v=3
         securityContext:
           runAsUser: 0
           privileged: true

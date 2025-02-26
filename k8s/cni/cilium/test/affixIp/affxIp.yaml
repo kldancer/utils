@@ -1,15 +1,15 @@
 apiVersion: cilium.io/v2
 kind: CiliumAffixIp
 metadata:
-  name: 1.1.1.1
+  name: 10.210.20.155
 spec:
-  address: "1.1.1.1"
+  address: "10.210.20.155"
   ipType: 6
 ---
 apiVersion: cilium.io/v2
 kind: CiliumAffixIp
 metadata:
-  name: 2.2.2.2
+  name: 10.210.20.55
 spec:
-  address: "2.2.2.2"
+  address: "10.210.20.55"
   ipType: 6

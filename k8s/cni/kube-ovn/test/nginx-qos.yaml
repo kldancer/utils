@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  namespace: ykl
+  labels:
+    app: nginx
+#    qos-resource/qos-1r356oi4: qos-1r356oi4
+#    qos-resource/qos-eowb7du3: qos-eowb7du3
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      annotations:
+        ovn.kubernetes.io/logical_switch: subnet-gzu07a0k
+        k8s.v1.cni.cncf.io/networks: kube-system/subnet-njzsyo1v
+        subnet-gzu07a0k.qos-resource/qos-id: qos-065fmftj
+        subnet-njzsyo1v.qos-resource/qos-id: qos-065fmftj
+      #        subnet-r6b2ic74.qos-resource/qos-id: qos-eowb7du3
+      labels:
+        app: nginx
+    #        qos-resource/qos-1r356oi4: qos-1r356oi4
+    #        qos-resource/qos-eowb7du3: qos-eowb7du3
+    #        qos-resource/qos-bound: "true"
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:alpine
+          ports:
+            - containerPort: 80
+      nodeSelector:
+        kubernetes.io/hostname: node152
