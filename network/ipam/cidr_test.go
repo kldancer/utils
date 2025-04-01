@@ -16,3 +16,13 @@ func TestIsIPInSubnet(t *testing.T) {
 		fmt.Println("IP is not in the subnet")
 	}
 }
+
+func TestCArrayStringForIPv4(t *testing.T) {
+	ip := "10.210.20.152"
+	a := CArrayStringForIPv4(ip)
+	fmt.Println(a)
+
+	_a, _ := ipv4ToCFormat(ip)
+	fmt.Println(_a)
+
+}

@@ -215,13 +215,13 @@ spec:
         component: network
         type: infra
     spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: node-role.kubernetes.io/edge
-                operator: DoesNotExist
+#      affinity:
+#        nodeAffinity:
+#          requiredDuringSchedulingIgnoredDuringExecution:
+#            nodeSelectorTerms:
+#            - matchExpressions:
+#              - key: node-role.kubernetes.io/edge
+#                operator: DoesNotExist
       tolerations:
         - effect: NoSchedule
           operator: Exists
@@ -439,13 +439,13 @@ spec:
         component: network
         type: infra
     spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: node-role.kubernetes.io/edge
-                operator: DoesNotExist
+#      affinity:
+#        nodeAffinity:
+#          requiredDuringSchedulingIgnoredDuringExecution:
+#            nodeSelectorTerms:
+#            - matchExpressions:
+#              - key: node-role.kubernetes.io/edge
+#                operator: DoesNotExist
       priorityClassName: system-node-critical
       serviceAccountName: kube-ovn-app
       hostPID: true

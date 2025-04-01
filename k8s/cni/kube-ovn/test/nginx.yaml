@@ -13,7 +13,9 @@ spec:
   template:
     metadata:
       annotations:
-        ovn.kubernetes.io/logical_switch: subnet-gzu07a0k
+#        ovn.kubernetes.io/logical_switch: subnet-gzu07a0k
+        ovn.kubernetes.io/logical_switch: net1
+#        kubernetes.io/egress-bandwidth: "10M"
       labels:
         app: nginx
     spec:
@@ -40,7 +42,9 @@ spec:
   template:
     metadata:
       annotations:
-        ovn.kubernetes.io/logical_switch: subnet-gzu07a0k
+#        ovn.kubernetes.io/logical_switch: subnet-gzu07a0k
+        ovn.kubernetes.io/logical_switch: net1
+#        kubernetes.io/egress-bandwidth: "20M"
       labels:
         app: nginx-2
     spec:
@@ -49,5 +53,5 @@ spec:
           image: nginx:alpine
           ports:
             - containerPort: 80
-      nodeSelector:
-        kubernetes.io/hostname: node153
+#      nodeSelector:
+#        kubernetes.io/hostname: node153
