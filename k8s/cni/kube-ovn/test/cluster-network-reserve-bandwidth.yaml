@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cluster-network-reserve-bandwidth
+  namespace: kube-system
+data:
+  bandwidth: "2000"
+  #port: |
+  #  - 5201
+  #  - 5202

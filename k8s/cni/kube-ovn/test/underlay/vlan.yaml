@@ -4,4 +4,4 @@ metadata:
   name: vlan10
 spec:
   id: 10
-  provider: enp3s0
+  provider: ens224

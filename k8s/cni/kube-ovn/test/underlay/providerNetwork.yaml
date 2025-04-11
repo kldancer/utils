@@ -1,6 +1,6 @@
 apiVersion: kubeovn.io/v1
 kind: ProviderNetwork
 metadata:
-  name: enp3s0
+  name: ens224
 spec:
-  defaultInterface: enp3s0
+  defaultInterface: ens224
