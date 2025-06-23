@@ -4,7 +4,7 @@ metadata:
   name: cluster-network-reserve-bandwidth
   namespace: kube-system
 data:
-  bandwidth: "2000"
-  #port: |
-  #  - 5201
-  #  - 5202
+  bandwidth: "1000"
+  port: |
+    - 5201
+    - 5202

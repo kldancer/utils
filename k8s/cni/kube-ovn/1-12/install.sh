@@ -50,7 +50,8 @@ CNI_BIN_DIR="/opt/cni/bin"
 
 REGISTRY="docker.io/kubeovn"
 VPC_NAT_IMAGE="vpc-nat-gateway"
-VERSION="v1.12.22"
+VERSION="v1.12.22-fix"
+VERSION_GW="v1.12.22"
 IMAGE_PULL_POLICY="IfNotPresent"
 
 POD_CIDR_IPV4="10.16.0.0/16"
@@ -2979,6 +2980,7 @@ rules:
       - get
       - list
       - watch
+      - create
   - apiGroups:
       - apps
     resources:
@@ -4313,7 +4315,6 @@ spec:
           - --enable-tproxy=$ENABLE_TPROXY
           - --ovs-vsctl-concurrency=$OVS_VSCTL_CONCURRENCY
           - --secure-serving=${SECURE_SERVING}
-          - --v=3
         securityContext:
           runAsUser: 0
           privileged: true

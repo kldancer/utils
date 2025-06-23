@@ -18,11 +18,18 @@ func TestIsIPInSubnet(t *testing.T) {
 }
 
 func TestCArrayStringForIPv4(t *testing.T) {
-	ip := "10.210.20.152"
+	ip := "192.168.5.147"
 	a := CArrayStringForIPv4(ip)
 	fmt.Println(a)
 
 	_a, _ := ipv4ToCFormat(ip)
 	fmt.Println(_a)
+
+	_ip := "10.0.112.69"
+	b := CArrayStringForIPv4(_ip)
+	fmt.Println(b)
+
+	_b, _ := ipv4ToCFormat(_ip)
+	fmt.Println(_b)
 
 }

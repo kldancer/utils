@@ -43,7 +43,7 @@ spec:
       hostPID: true
       containers:
         - name: openvswitch
-          image: "docker.io/kubeovn/kube-ovn:v1.12.22"
+          image: "docker.io/kubeovn/kube-ovn:v1.12.22-fix"
           imagePullPolicy: IfNotPresent
           command:
           - /kube-ovn/start-ovs.sh

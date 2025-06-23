@@ -105,7 +105,7 @@ spec:
       hostNetwork: true
       containers:
         - name: ovn-central
-          image: "docker.io/kubeovn/kube-ovn:v1.12.22"
+          image: "docker.io/kubeovn/kube-ovn:v1.12.22-fix"
           imagePullPolicy: IfNotPresent
           command:
           - /kube-ovn/start-db.sh

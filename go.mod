@@ -7,7 +7,7 @@ toolchain go1.22.10
 require (
 	github.com/aliyun/alibaba-cloud-sdk-go v1.62.564
 	github.com/cheggaaa/pb/v3 v3.1.4
-	github.com/cilium/ebpf v0.17.1
+	github.com/florianl/go-tc v0.4.5
 	github.com/google/martian v2.1.0+incompatible
 	github.com/jaypipes/ghw v0.12.0
 	github.com/k8snetworkplumbingwg/sriovnet v1.2.0
@@ -36,6 +36,7 @@ require (
 require (
 	github.com/StackExchange/wmi v1.2.1 // indirect
 	github.com/VividCortex/ewma v1.2.0 // indirect
+	github.com/cilium/ebpf v0.17.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/emicklei/go-restful/v3 v3.11.0 // indirect
 	github.com/evanphx/json-patch/v5 v5.8.0 // indirect
@@ -67,6 +68,7 @@ require (
 	github.com/mattn/go-isatty v0.0.19 // indirect
 	github.com/mattn/go-runewidth v0.0.14 // indirect
 	github.com/mdlayher/ethernet v0.0.0-20220221185849-529eae5b6118 // indirect
+	github.com/mdlayher/netlink v1.7.2 // indirect
 	github.com/mdlayher/packet v1.0.0 // indirect
 	github.com/mdlayher/socket v0.4.1 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
