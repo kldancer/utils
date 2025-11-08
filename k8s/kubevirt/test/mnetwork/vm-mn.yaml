@@ -1,14 +1,14 @@
 apiVersion: kubevirt.io/v1
 kind: VirtualMachine
 metadata:
-  name: vm-cirros
+  name: vm-multus-demo
   namespace: default
 spec:
   running: true
   template:
     metadata:
       labels:
-        kubevirt.io/domain: vm-cirros
+        kubevirt.io/domain: vm-multus-demo
     spec:
       domain:
         cpu:
@@ -18,17 +18,21 @@ spec:
             memory: 512Mi
         devices:
           disks:
-            - name: rootdisk
+            - name: containerdisk
               disk:
                 bus: virtio
           interfaces:
             - name: default
-              masquerade: {}
+              bridge: {}       # 主网卡使用默认 kube-ovn 网络
+#            - name: ovn-net1
+#              bridge: {}           # 第二张网卡使用 bridge 模式
       networks:
         - name: default
-          pod: {}
+          pod: {}                  # 绑定默认网络（kube-ovn）
+#        - name: ovn-net1
+#          multus:
+#            networkName: net1
       volumes:
-        - name: rootdisk
+        - name: containerdisk
           containerDisk:
             image: quay.io/kubevirt/cirros-container-disk-demo
-      terminationGracePeriodSeconds: 0

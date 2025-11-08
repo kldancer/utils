@@ -1,0 +1,41 @@
+#kind: Vpc
+#apiVersion: kubeovn.io/v1
+#metadata:
+#  name: test-vpc-1
+#---
+#kind: Subnet
+#apiVersion: kubeovn.io/v1
+#metadata:
+#  name: net1
+#spec:
+#  vpc: test-vpc-1
+#  provider: net1.default.ovn
+#  cidrBlock: 11.0.1.0/24
+#  protocol: IPv4
+#---
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: kube-ovn-att1
+  namespace: default
+spec:
+  # value：attach的name.namespace,如果type=kube-ovn，需要再加上“.ovn”
+  config: '{
+      "cniVersion": "0.3.0",
+      "type": "kube-ovn",
+      "server_socket": "/run/openvswitch/kube-ovn-daemon.sock",
+      "provider": "kube-ovn-att1.default.ovn"
+    }'
+
+---
+apiVersion: kubeovn.io/v1
+kind: Subnet
+metadata:
+  name: net1
+spec:
+  protocol: IPv4
+  provider: kube-ovn-att1.default.ovn
+  cidrBlock: 172.55.0.0/16
+  gateway: 172.55.0.1
+  excludeIps:
+    - 172.55.0.1..172.55.0.10
